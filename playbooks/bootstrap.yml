@@ -1,0 +1,16 @@
+---
+- name: Bootstrap Python
+  hosts: freebsd
+  gather_facts: no
+  tasks:
+    - name: Bootstrap pkg
+      raw: sh -c 'yes | pkg bootstrap'
+      register: bootstrap_pkg
+      changed_when: '"pkg already bootstrapped" not in bootstrap_pkg.stdout'
+      tags: bootstrap
+
+    - name: Install Python
+      raw: 'pkg install -y python27'
+      register: install_python
+      changed_when: '"The most recent version of packages are already installed" not in install_python.stdout'
+      tags: bootstrap

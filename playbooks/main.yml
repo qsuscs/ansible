@@ -1,0 +1,6 @@
+---
+- import_playbook: bootstrap.yml
+
+- hosts: all
+  roles:
+    - ssh

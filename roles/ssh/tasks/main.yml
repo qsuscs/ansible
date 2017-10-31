@@ -1,0 +1,23 @@
+---
+
+- name: Ensure .ssh directory exists
+  file:
+    state: directory
+    path: /root/.ssh
+    owner: root
+  tags:
+    - ssh
+
+# filename syntax: name.pub or name+dest_host_1,...,dest_host_n.pub
+- name: Ensure SSH keys for root are present
+  assemble:
+    dest: /root/.ssh/authorized_keys
+    owner: root
+    remote_src: False
+    src: authorized_keys
+    backup: True
+    ignore_hidden: True
+    regexp: "^([^+]+|[^+]+\\+([^+]+,)*{{ inventory_hostname }}(,[^+]+)*).pub$"
+  tags:
+    - ssh
+    - root
